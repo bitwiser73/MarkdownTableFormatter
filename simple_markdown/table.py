@@ -4,12 +4,12 @@ def find_all(text):
     tables = []
     offset = 0
     while True:
-        group = re.search(".*\|.*\n[\s\t]*\|?(?::?[-]+:?\|)+(\n.*\|.*)+",
-                          text[offset:], re.MULTILINE)
-        if group is None:
+        grp = re.search(".*\|.*\r?\n[\s\t]*\|?(?::?[-. ]+:?\|)+(\r?\n.*\|.*)+",
+                        text[offset:], re.MULTILINE)
+        if grp is None:
             return tables
-        tables.append((group.start() + offset, group.end() + offset))
-        offset = offset + group.end()
+        tables.append((grp.start() + offset, grp.end() + offset))
+        offset = offset + grp.end()
     return tables
 
 def format(raw_table):
@@ -18,7 +18,7 @@ def format(raw_table):
     for idx, row in enumerate(rows):
         if re.match("^[\s\t]*\|", row) is None:
             rows[idx] = "|" + rows[idx]
-        if re.match(".*\|[\s\t]*\n?$", row) is None:
+        if re.match(".*\|[\s\t]*\r?\n?$", row) is None:
             rows[idx] = rows[idx] + "|"
 
     matrix = [[col.strip() for col in row.split("|")] for row in rows]
@@ -33,7 +33,7 @@ def format(raw_table):
       [row if len(row) == cols else row+[""]*(cols-len(row)) for row in matrix]
 
     # merge the multiple "-" of the 2nd line
-    matrix[1] = [re.sub("[- ]+","-", col) for col in matrix[1]]
+    matrix[1] = [re.sub("[-. ]+","-", col) for col in matrix[1]]
 
     # determine each column size
     widths = [[len(col) for col in row] for row in matrix]

@@ -6,6 +6,7 @@ import sys
 
 sys.path.append(os.path.realpath('..'))
 import simple_markdown.table
+import simple_markdown.table as Table
 
 #import unittest
 
@@ -28,7 +29,8 @@ expected_table = """\
 | $2            |              |        |"""
 
 print(raw_table)
-table = simple_markdown.table.format(raw_table)
+table = Table.format(raw_table, margin=1, padding=0,
+                     default_justify=Table.Justify.CENTER)
 print(table)
 
 if table == expected_table:

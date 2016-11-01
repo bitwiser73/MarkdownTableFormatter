@@ -2,7 +2,7 @@
 	// make plugin verbose in debug console
 	"verbose": true,
 
-	// scan all document to format tables when saving
+	// scan document to format tables when saving
 	"autoformat_on_save": false,
 
 	// spaces between "|" and cell's text

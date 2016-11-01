@@ -8,8 +8,8 @@ from .simple_markdown import table
 
 log = logging.getLogger(__name__)
 
-class MarkdownTableFormatterFormatCommand(sublime_plugin.TextCommand):
     def run(self, edit):
+class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
         settings = \
             sublime.load_settings("MarkdownTableFormatter.sublime-settings")
         verbose = settings.get("verbose")

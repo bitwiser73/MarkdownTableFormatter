@@ -1,7 +1,7 @@
 [
     {
         "keys": ["ctrl+alt+shift+t"],
-        "command": "markdown_table_formatter_format",
+        "command": "markdown_table_format",
         "context": [
              {"key": "selector", "operator": "equal", "operand": "text.html.markdown"}
         ]

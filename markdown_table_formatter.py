@@ -8,8 +8,9 @@ from .simple_markdown import table
 
 log = logging.getLogger(__name__)
 
-    def run(self, edit):
+
 class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
+    def run(self, edit, format_all=False):
         logging.basicConfig(level=logging.DEBUG)
         settings = \
             sublime.load_settings("MarkdownTableFormatter.sublime-settings")
@@ -25,23 +26,55 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
         else:
             log.setLevel(logging.INFO)
 
-        for region in self.view.sel():
+        # format selected regions or all file with no selection
+        has_selection = len(self.view.sel()) and self.view.sel()[0].size()
+        if not format_all and has_selection:
+            regions = self.view.sel()
+        else:
+            regions = [sublime.Region(0, self.view.size())]
+
+        table_new_regions = []
+        for region in regions:
             text = self.view.substr(region)
             # get all tables positions as (start,end) list
             positions = markdown.table.find_all(text)
             offset = 0
             for start, end in positions:
-                raw_table = text[start:end]
-                log.debug("table found:\n" + raw_table)
-                table = markdown.table.format(raw_table, margin, padding,
-                                              justify)
-                log.debug("formatted output:\n" + table)
+                prev_table = text[start:end]
+                log.debug("table found:\n" + prev_table)
+                new_table = markdown.table.format(prev_table, margin, padding,
+                                                  justify)
+                log.debug("formatted output:\n" + new_table)
 
-                # replace the raw table with the formetted one
-                table_region = sublime.Region(region.begin() + start + offset,
-                                              region.begin() + end + offset)
-                self.view.replace(edit, table_region, table)
+                # absolute original table position after some insertion/removal
+                table_prev_begin = region.begin() + start + offset
+                table_prev_end = region.begin() + end + offset
+                table_prev_region = \
+                    sublime.Region(table_prev_begin, table_prev_end)
+                
+                # future table position after some insertion/removal
+                table_new_begin = table_prev_begin
+                table_new_end = region.begin() + start + offset + len(new_table)
+                table_new_region = \
+                    sublime.Region(table_new_begin, table_new_end)
 
-                # as table length will likely change, an offset is required to
-                # keep the modified region consistent
-                offset = offset + len(table) - (end - start)
+                self.view.replace(edit, table_prev_region, new_table)
+                # stack new regions to update selection
+                table_new_regions.append(table_new_region)
+
+                # as table length will likely change after being formatted an
+                # offset is required to keep positions consistent
+                offset = offset + len(new_table) - len(prev_table)
+
+        if table_new_regions and not format_all:
+            had_multiple_regions = has_selection and len(self.view.sel()) > 1
+            self.view.sel().clear()
+
+            # I don't like having to hit 'esc' to get only one cursor back after
+            # having formatted more than one table using one selection
+            if had_multiple_regions or len(table_new_regions) == 1:
+                log.debug("MULTIPLE REGION")
+                self.view.sel().add_all(table_new_regions)
+            else:
+                cursor = sublime.Region(table_new_regions[0].a)
+                self.view.sel().add(cursor)

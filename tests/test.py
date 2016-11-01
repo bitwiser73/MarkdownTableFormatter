@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*_
 
-import os
-import sys
+import unittest
 
-sys.path.append(os.path.realpath('..'))
+import testpath
 import simple_markdown.table
 import simple_markdown.table as Table
 
-import unittest
 
 class test_markdown_table(unittest.TestCase):
     def setUp(self):
         pass
+
     def tearDown(self):
         pass
 
@@ -25,7 +24,7 @@ col 2 is      | centered|   $12
   | zebra stripes |       | are neat   $1 |  
 || |$hello
 |    $2 |"""
-    
+
         expected_table_2_2 = """\
 |  Tables           |       Are        |             Cool  |
 |:------------------|:----------------:|------------------:|

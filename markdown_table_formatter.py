@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import sublime
 import sublime_plugin
 
@@ -19,7 +21,6 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
         padding = settings.get("padding")
         justify = settings.get("default_justification")
         justify = markdown.table.Justify.from_string[justify]
-        autoformat_on_save = settings.get("autoformate_on_save")
 
         if verbose:
             log.setLevel(logging.DEBUG)
@@ -51,10 +52,11 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
                 table_prev_end = region.begin() + end + offset
                 table_prev_region = \
                     sublime.Region(table_prev_begin, table_prev_end)
-                
+
                 # future table position after some insertion/removal
                 table_new_begin = table_prev_begin
-                table_new_end = region.begin() + start + offset + len(new_table)
+                table_new_end = \
+                    region.begin() + start + offset + len(new_table)
                 table_new_region = \
                     sublime.Region(table_new_begin, table_new_end)
 
@@ -70,8 +72,8 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
             had_multiple_regions = has_selection and len(self.view.sel()) > 1
             self.view.sel().clear()
 
-            # I don't like having to hit 'esc' to get only one cursor back after
-            # having formatted more than one table using one selection
+            # I don't like having to hit 'esc' to get only one cursor back
+            # after having formatted more than one table using one selection
             if had_multiple_regions or len(table_new_regions) == 1:
                 log.debug("MULTIPLE REGION")
                 self.view.sel().add_all(table_new_regions)
@@ -85,7 +87,7 @@ class MarkdownTableFormatterListener(sublime_plugin.EventListener):
         # restrict to markdown files
         if view.score_selector(0, "text.html.markdown") == 0:
             return
-            
+
         settings = \
             sublime.load_settings("MarkdownTableFormatter.sublime-settings")
         if not settings.get("autoformat_on_save"):

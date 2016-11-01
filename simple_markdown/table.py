@@ -1,5 +1,6 @@
 import re
 
+
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     from_string = dict((key, value) for key, value in enums.items())
@@ -9,6 +10,7 @@ def enum(*sequential, **named):
     return type('Enum', (), enums)
 
 Justify = enum("LEFT", "CENTER", "RIGHT")
+
 
 def find_all(text):
     tables = []
@@ -21,6 +23,7 @@ def find_all(text):
         tables.append((grp.start() + offset, grp.end() + offset))
         offset = offset + grp.end()
     return tables
+
 
 def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
     rows = raw_table.splitlines()
@@ -40,7 +43,7 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
     # ensure there's same column number for each row or add missings
     col_cnt = max([len(row) for row in matrix])
     matrix[:] = \
-      [r if len(r) == col_cnt else r + [""]*(col_cnt - len(r)) for r in matrix]
+        [r if len(r) == col_cnt else r + [""]*(col_cnt-len(r)) for r in matrix]
 
     # merge the multiple "-" of the 2nd line
     matrix[1] = [re.sub("[-. ]+","-", col) for col in matrix[1]]
@@ -97,4 +100,3 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
 
     table.insert(1, "|" + "|".join(sep_row) + "|")
     return "\n".join(table)
-

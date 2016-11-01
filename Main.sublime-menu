@@ -1,5 +1,17 @@
 [
 		{
+				"Caption": "Edit",
+				"mnemonic": "E",
+				"id": "edit",
+				"children":
+				[
+					{
+						"caption": "Markdown Table Formatter",
+						"command": "markdown_table_format"
+					}
+				]
+		},
+		{
 				"caption": "Preferences",
 				"mnemonic": "n",
 				"id": "preferences",

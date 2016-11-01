@@ -10,6 +10,7 @@ log = logging.getLogger(__name__)
 
     def run(self, edit):
 class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
+        logging.basicConfig(level=logging.DEBUG)
         settings = \
             sublime.load_settings("MarkdownTableFormatter.sublime-settings")
         verbose = settings.get("verbose")
@@ -20,7 +21,9 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
         autoformat_on_save = settings.get("autoformate_on_save")
 
         if verbose:
-            logging.basicConfig(level=logging.DEBUG)
+            log.setLevel(logging.DEBUG)
+        else:
+            log.setLevel(logging.INFO)
 
         for region in self.view.sel():
             text = self.view.substr(region)

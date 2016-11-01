@@ -78,3 +78,16 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
             else:
                 cursor = sublime.Region(table_new_regions[0].a)
                 self.view.sel().add(cursor)
+
+
+class MarkdownTableFormatterListener(sublime_plugin.EventListener):
+    def on_pre_save(self, view):
+        # restrict to markdown files
+        if view.score_selector(0, "text.html.markdown") == 0:
+            return
+            
+        settings = \
+            sublime.load_settings("MarkdownTableFormatter.sublime-settings")
+        if not settings.get("autoformat_on_save"):
+            return
+        view.run_command("markdown_table_format", {"format_all": True})

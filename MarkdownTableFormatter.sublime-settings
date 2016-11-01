@@ -1,6 +1,6 @@
 {
 	// make plugin verbose in debug console
-	"verbose": true,
+	"verbose": false,
 
 	// scan document to format tables when saving
 	"autoformat_on_save": false,

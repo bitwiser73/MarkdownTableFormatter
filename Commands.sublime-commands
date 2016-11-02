@@ -1,0 +1,6 @@
+[
+	{
+		"caption": "MarkdownTableFormatter: format table",
+		"command": "markdown_table_format"
+    }
+]

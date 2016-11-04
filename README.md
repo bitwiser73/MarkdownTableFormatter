@@ -15,7 +15,7 @@ There are two basic ways of using this plugin.
 
 ## Configuration
 
-```json
+```
 {
 	// make plugin verbose in debug console
 	"verbose": false,

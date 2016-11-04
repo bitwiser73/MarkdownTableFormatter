@@ -8,6 +8,7 @@ Inspired from https://atom.io/packages/markdown-table-formatter from **fcrespo82
 
 ![Example](mtf_show_off_small.gif)
 
+
 ## Usage
 
 There are two basic ways of using this plugin.  
@@ -35,3 +36,5 @@ There are two basic ways of using this plugin.
 	"default_justification": "LEFT"
 }
 ```
+
+[img-mit]: https://img.shields.io/badge/license-MIT-blue.svg

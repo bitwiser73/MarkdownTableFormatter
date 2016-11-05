@@ -5,6 +5,7 @@ Sublime Text 3 markdown plugin that offers table formatting.
 Inspired from https://atom.io/packages/markdown-table-formatter from **fcrespo82** (Fernando).
 
 [![MIT licensed][img-mit]](./LICENSE)
+[![Donate][img-paypal]][donate-paypal]
 
 ![Example](mtf_show_off_small.gif)
 

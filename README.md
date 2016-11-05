@@ -37,4 +37,11 @@ There are two basic ways of using this plugin.
 }
 ```
 
+# Support it!
+[![Donate][img-paypal]][donate-paypal]
+
+
+[donate-paypal]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WAQUTBM9K8246
+
 [img-mit]: https://img.shields.io/badge/license-MIT-blue.svg
+[img-paypal]: https://img.shields.io/badge/Donate-PayPal-blue.svg

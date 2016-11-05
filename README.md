@@ -2,7 +2,9 @@
 
 Sublime Text 3 markdown plugin that offers table formatting.
 
-Inspired from https://atom.io/packages/markdown-table-formatter from **fcrespo82** (Fernando).
+Inspired by the [Atom's version](https://atom.io/packages/markdown-table-formatter) from fcrespo82 (Fernando).
+
+markdowntableformatter[at]gmail[.]com
 
 [![MIT licensed][img-mit]](./LICENSE)
 [![Donate][img-paypal]][donate-paypal]
@@ -12,10 +14,7 @@ Inspired from https://atom.io/packages/markdown-table-formatter from **fcrespo82
 
 ## Usage
 
-There are two basic ways of using this plugin.  
-  
-1. Select the table you want to format and them hit ctrl+alt-shift-T to format it.  
-2. If you didn't select any table, the entire document will be scanned for tables and formatted.  
+There are two basic ways of using this plugin. Select what you want to format and hit **Ctrl+Alt+Shift+T** or use the same shortcut without selection to format the entire document.  
 
 ## Configuration
 

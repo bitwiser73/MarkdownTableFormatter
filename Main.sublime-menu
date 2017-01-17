@@ -29,14 +29,14 @@
 											[
 													{
 														"command": "edit_settings",
-														"args": { "base_file": "${packages}/MarkdownTableFormatter/MarkdownTableFormatter.sublime-settings" },
+														"args": { "base_file": "${packages}/Markdown Table Formatter/MarkdownTableFormatter.sublime-settings" },
 														"caption": "Settings"
 													},
 													{ "caption": "-" },
 													{
 														"command": "open_file",
 														"args": {
-																"file": "${packages}/MarkdownTableFormatter/Default (OSX).sublime-keymap",
+																"file": "${packages}/Markdown Table Formatter/Default (OSX).sublime-keymap",
 																"platform": "OSX"
 														},
 														"caption": "Key Bindings – Default"
@@ -44,7 +44,7 @@
 													{
 														"command": "open_file",
 														"args": {
-																"file": "${packages}/MarkdownTableFormatter/Default (Linux).sublime-keymap",
+																"file": "${packages}/Markdown Table Formatter/Default (Linux).sublime-keymap",
 																"platform": "Linux"
 														},
 														"caption": "Key Bindings – Default"
@@ -52,7 +52,7 @@
 													{
 														"command": "open_file",
 														"args": {
-																"file": "${packages}/MarkdownTableFormatter/Default (Windows).sublime-keymap",
+																"file": "${packages}/Markdown Table Formatter/Default (Windows).sublime-keymap",
 																"platform": "Windows"
 														},
 														"caption": "Key Bindings – Default"

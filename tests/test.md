@@ -27,3 +27,15 @@ This is some text that won't be modified when formatting those nice tables.
 
 | it's | a trap | (i'm not a table!)
 Select 1 | Select 2 | Select ALL
+
+
+foo|bar
+---|---
+test1-|-test2
+
+
+foo|bar
+--|:---
+test1-|-test2
+
+

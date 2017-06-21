@@ -50,6 +50,22 @@ col 2 is      | centered|   $12
         table = Table.format(raw_table, margin=0, padding=0)
         self.assertEqual(table, expected_table_0_0)
 
+        # test table with minimal form (#7)
+        small = """\
+foo|bar
+--------|:---
+123|4567777789
+a|"""
+
+        expected_small = """\
+| foo | bar        |
+|:----|:-----------|
+| 123 | 4567777789 |
+| a   |            |"""
+
+        table = Table.format(small, margin=1, padding=0)
+        self.assertEqual(table, expected_small)
+
     def test_find_all(self):
         junk_tables = """
 |   Tables        | Are       | Cool #1  |

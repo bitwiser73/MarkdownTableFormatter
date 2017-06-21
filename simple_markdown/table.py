@@ -16,8 +16,8 @@ def find_all(text):
     tables = []
     offset = 0
     while True:
-        grp = re.search(".*\|.*\r?\n[\s\t]*\|?(?::?[-. ]+:?\|)+(\r?\n.*\|.*)+",
-                        text[offset:], re.MULTILINE)
+        pattern = ".*\|.*\r?\n[\s\t]*\|?(?::?-+:?\|:?-+:?\|?)+(?:\r?\n.*\|.*)+"
+        grp = re.search(pattern, text[offset:], re.MULTILINE)
         if grp is None:
             return tables
         tables.append((grp.start() + offset, grp.end() + offset))

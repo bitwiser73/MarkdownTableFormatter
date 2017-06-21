@@ -1,13 +1,10 @@
-# Markdown Table Formatter
+# Markdown Table Formatter [![travis][img-travis]](https://travis-ci.org/bitwiser73/MarkdownTableFormatter) [![MIT licensed][img-mit]](./LICENSE) [![Donate][img-paypal]][donate-paypal]
 
 Sublime Text 3 markdown plugin that offers table formatting.
 
 Inspired by the [Atom's version](https://atom.io/packages/markdown-table-formatter) from fcrespo82 (Fernando).
 
 markdowntableformatter[at]gmail[.]com
-
-[![MIT licensed][img-mit]](./LICENSE)
-[![Donate][img-paypal]][donate-paypal]
 
 ![Example](mtf_show_off_small.gif)
 
@@ -43,5 +40,6 @@ There are two basic ways of using this plugin. Select what you want to format an
 
 [donate-paypal]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WAQUTBM9K8246
 
+[img-travis]: https://travis-ci.org/bitwiser73/MarkdownTableFormatter.svg?branch=master
 [img-mit]: https://img.shields.io/badge/license-MIT-blue.svg
 [img-paypal]: https://img.shields.io/badge/Donate-PayPal-blue.svg

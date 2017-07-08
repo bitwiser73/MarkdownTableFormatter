@@ -61,7 +61,7 @@ def find_all(text):
 
 
 def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT,
-           convert_cjk = False, cjk_width=2):
+           convert_cjk=False, cjk_width=2):
     rows = raw_table.splitlines()
 
     # add missing leading/trailing '|'

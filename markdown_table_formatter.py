@@ -69,7 +69,7 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
                 offset = offset + len(new_table) - len(prev_table)
 
         if table_new_regions and not format_all:
-            had_multiple_regions = has_selection and len(self.view.sel()) > 1
+            had_multiple_regions == has_selection and len(self.view.sel()) > 1
             self.view.sel().clear()
 
             # I don't like having to hit 'esc' to get only one cursor back

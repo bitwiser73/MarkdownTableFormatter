@@ -1,6 +1,9 @@
 import re
 
 
+def len2(txt):
+    return len(txt.encode('GBK'))
+
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     from_string = dict((key, value) for key, value in enums.items())
@@ -41,15 +44,15 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
     matrix[:] = [row[:-1] for row in matrix]
 
     # ensure there's same column number for each row or add missings
-    col_cnt = max([len(row) for row in matrix])
+    col_cnt = max([len2(row) for row in matrix])
     matrix[:] = \
-        [r if len(r) == col_cnt else r + [""]*(col_cnt-len(r)) for r in matrix]
+        [r if len2(r) == col_cnt else r + [""]*(col_cnt-len2(r)) for r in matrix]
 
     # merge the multiple "-" of the 2nd line
     matrix[1] = [re.sub("[-. ]+","-", col) for col in matrix[1]]
 
     # determine each cell text size
-    text_width = [[len(col) for col in row] for row in matrix]
+    text_width = [[len2(col) for col in row] for row in matrix]
     # determine column width (including space padding/margin)
     col_width = [max(size) + margin*2 + padding for size in zip(*text_width)]
 
@@ -74,7 +77,7 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
             continue
         for col_idx, col in enumerate(row):
             if justify[col_idx] == Justify.CENTER:
-                div, mod = divmod(col_width[col_idx] - len(col), 2)
+                div, mod = divmod(col_width[col_idx] - len2(col), 2)
                 text = " "*div + col + " "*(div+mod)
                 line.append(text + "|")
                 continue

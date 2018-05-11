@@ -2,8 +2,8 @@ import re
 
 
 def len2(txt):
-    if isinstance(txt, str):
-        return len(txt.encode('GBK'))
+    if isinstance(txt, str):        
+        return len(txt.encode('GBK', errors="replace"))
     else:
         return len(txt)
 

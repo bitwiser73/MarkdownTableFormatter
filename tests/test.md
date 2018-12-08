@@ -38,4 +38,10 @@ foo|bar
 --|:---
 test1-|-test2
 
+table with pipe symbols
 
+param | regex | description
+------|-------|-----------|
+foo|`/cat|dog|dino/`|blabla|
+bar|just escaped pipe >> \| <<|Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, id.|
+foo bar | ** `a|d` ** | `\\`` |

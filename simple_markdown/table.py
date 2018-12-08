@@ -34,11 +34,7 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
         if re.match(".*\|[\s\t]*\r?\n?$", row) is None:
             rows[idx] = rows[idx] + "|"
 
-    matrix = [[col.strip() for col in row.split("|")] for row in rows]
-
-    # remove first and last empties column
-    matrix[:] = [row[1:] for row in matrix]
-    matrix[:] = [row[:-1] for row in matrix]
+    matrix = [[col.strip() for col in parse_row_to_cols(row)] for row in rows]
 
     # ensure there's same column number for each row or add missings
     col_cnt = max([len(row) for row in matrix])
@@ -100,3 +96,91 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
 
     table.insert(1, "|" + "|".join(sep_row) + "|")
     return "\n".join(table)
+
+
+def parse_row_to_cols(row):
+    state = []
+    cols = []
+    col = ""
+    i = -1
+    while (i + 1 < len(row)):
+        # consume next char
+        i += 1
+        ch = row[i]
+        col += ch
+
+        if len(state) == 0:
+            # global state
+            if ch == '|':
+                cols.append(col[:-1] if len(col) > 0 else '')
+                col = ''
+            elif ch == '\\':
+                state.append('\\')
+            elif ch == '`':
+                state.append('`')
+            elif ch == '*' and peek(i, row) == '*':
+                # consume next char
+                i += 1
+                ch = row[i]
+                col += ch
+
+                state.append('**')
+            elif ch == '*':
+                state.append('*')
+            else:
+                pass
+        elif state[-1] == '\\':
+            # escaped
+            state.pop()
+        elif state[-1] == '`':
+            # code
+            if ch == '`':
+                state.pop()
+            elif ch == '\\':
+                state.append('\\')
+            else:
+                pass
+        elif state[-1] == '*':
+            # emphasis *
+            if ch == '\\':
+                state.append('\\')
+            elif ch == '`':
+                state.append('`')
+            elif ch == '*':
+                if peek(i, row) == '*' and '**' not in state:
+                    # consume next char
+                    i += 1
+                    ch = row[i]
+                    col += ch
+
+                    state.append('**')
+                else:
+                    state.pop()
+        elif state[-1] == '**':
+            # emphasis **
+            if ch == '\\':
+                state.append('\\')
+            elif ch == '`':
+                state.append('`')
+            elif ch == '*':
+                if peek(i, row) == '*':
+                    # consume next char
+                    i += 1
+                    ch = row[i]
+                    col += ch
+
+                    state.pop()
+                elif '*' not in state:
+                    state.append('*')
+                else:
+                    pass
+        else:
+            pass
+    return cols[1:]
+
+
+def peek(pos, text, deep=1):
+    if pos + deep < len(text):
+        return text[pos + deep]
+    else:
+        None

@@ -1,6 +1,12 @@
 import re
 
 
+def len2(txt):
+    if isinstance(txt, str):        
+        return len(txt.encode('GBK', errors="replace"))
+    else:
+        return len(txt)
+
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     from_string = dict((key, value) for key, value in enums.items())
@@ -10,6 +16,7 @@ def enum(*sequential, **named):
     return type('Enum', (), enums)
 
 Justify = enum("LEFT", "CENTER", "RIGHT")
+
 
 
 def find_all(text):
@@ -43,15 +50,16 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
     # ensure there's same column number for each row or add missings
     col_cnt = max([len(row) for row in matrix])
     matrix[:] = \
-        [r if len(r) == col_cnt else r + [""]*(col_cnt-len(r)) for r in matrix]
+        [r if len(r) == col_cnt else r + [""]*(col_cnt-len(r)) for r in matrix]    
 
     # merge the multiple "-" of the 2nd line
     matrix[1] = [re.sub("[-. ]+","-", col) for col in matrix[1]]
 
     # determine each cell text size
-    text_width = [[len(col) for col in row] for row in matrix]
+    text_width = [[len2(col) for col in row] for row in matrix]
+    
     # determine column width (including space padding/margin)
-    col_width = [max(size) + margin*2 + padding for size in zip(*text_width)]
+    col_width = [max(size) + margin*2 + padding for size in zip(*text_width)]    
 
     # get each column justification or apply default
     justify = []
@@ -74,14 +82,14 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
             continue
         for col_idx, col in enumerate(row):
             if justify[col_idx] == Justify.CENTER:
-                div, mod = divmod(col_width[col_idx] - len(col), 2)
+                div, mod = divmod(col_width[col_idx] - len2(col), 2)                
                 text = " "*div + col + " "*(div+mod)
                 line.append(text + "|")
                 continue
             if justify[col_idx] == Justify.RIGHT:
-                text = col.rjust(col_width[col_idx] - margin*2)
+                text = col.rjust(col_width[col_idx] - margin*2 - (len2(col) - len(col)))
             elif justify[col_idx] == Justify.LEFT:
-                text = col.ljust(col_width[col_idx] - margin*2)
+                text = col.ljust(col_width[col_idx] - margin*2 - (len2(col) - len(col)))
             line.append(" "*margin + text + " "*margin + "|")
         table.append("".join(line))
 

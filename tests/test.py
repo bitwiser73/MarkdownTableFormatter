@@ -10,7 +10,7 @@ import simple_markdown.table as Table
 
 class test_markdown_table(unittest.TestCase):
     def setUp(self):
-        pass
+        self.maxDiff = None
 
     def tearDown(self):
         pass
@@ -19,9 +19,9 @@ class test_markdown_table(unittest.TestCase):
         raw_table = """\
 |   Tables        | Are       | Cool  |
 |:-------------|-------------|-----:|
- | col 1 is      | left-aligned                                    | $1600 |  
-col 2 is      | centered|   $12  
-  | zebra stripes |       | are neat   $1 |  
+ | col 1 is      | left-aligned                                    | $1600 |
+col 2 is      | centered|   $12
+  | zebra stripes |       | are neat   $1 |
 || |$hello
 |    $2 |"""
 
@@ -66,13 +66,30 @@ a|"""
         table = Table.format(small, margin=1, padding=0)
         self.assertEqual(table, expected_small)
 
+        code_with_pipes = """\
+param | regex | description
+------|-------|-----------|
+foo|`/cat|dog|dino/`|blabla|
+bar|just escaped pipe >> \\| <<|Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, id.|
+foo bar | ** `a|d` ** | `\\`` |"""
+
+        expected_code_with_pipes = """\
+| param   | regex                      | description                                                               |
+|:--------|:---------------------------|:--------------------------------------------------------------------------|
+| foo     | `/cat|dog|dino/`           | blabla                                                                    |
+| bar     | just escaped pipe >> \\| << | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, id. |
+| foo bar | ** `a|d` **                | `\\``                                                                      |"""
+
+        table = Table.format(code_with_pipes, margin=1, padding=0)
+        self.assertEqual(table, expected_code_with_pipes)
+
     def test_find_all(self):
         junk_tables = """
 |   Tables        | Are       | Cool #1  |
 |-------------|:-------------:|:-----|
- | col 3 is      | right-aligned | $1600 |  
-col 2 is      ||   $12  
-  | zebra stripes|are neat|    $1 |  
+ | col 3 is      | right-aligned | $1600 |
+col 2 is      ||   $12
+  | zebra stripes|are neat|    $1 |
 || |$hello
 |    $2 |
 
@@ -82,9 +99,9 @@ and junk
 
 |   Tables        | Are       | Cool #2 |
 |-------------|:-------------:|:-----|
- | col 3 is      | right-aligned | $1600 |  
-col 2 is      ||   $12  
-  | zebra stripes | are neat                                |    $1 |  
+ | col 3 is      | right-aligned | $1600 |
+col 2 is      ||   $12
+  | zebra stripes | are neat                                |    $1 |
 || |$hello
 |    $2 |
 
@@ -96,9 +113,24 @@ junk junk junk
 and some | to test |
 if it's still working ||||||
 is it?
+
+param | regex | description
+------|-------|-----------|
+foo|`/cat|dog|dino/`|blabla|
+bar|just escaped pipe >> \| <<|Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, id.|
+foo bar | ** `a|d` ** | `\\`` |
 """
         offsets = simple_markdown.table.find_all(junk_tables)
-        self.assertEqual(len(offsets), 3)
+        self.assertEqual(len(offsets), 4)
+
+    def test_parse_row_to_cols(self):
+        self.assertEqual(Table.parse_row_to_cols('|simple string, nothing else|'), ['simple string, nothing else'])
+        self.assertEqual(Table.parse_row_to_cols('|a|b|c|'), ['a', 'b', 'c'])
+        self.assertEqual(Table.parse_row_to_cols('|foo bar | `asd` | `\`` |'), ['foo bar ', ' `asd` ', ' `\`` '])
+        self.assertEqual(Table.parse_row_to_cols('|foo bar | `a|d` | `\`` |'), ['foo bar ', ' `a|d` ', ' `\`` '])
+        self.assertEqual(Table.parse_row_to_cols('|foo bar | ** `a|d` ** | `\\`` |'), ['foo bar ', ' ** `a|d` ** ', ' `\\`` '])
+        self.assertEqual(Table.parse_row_to_cols('|`foo`|`bar`|'), ['`foo`', '`bar`'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -18,9 +18,9 @@ class test_markdown_table(unittest.TestCase):
         raw_table = """\
 |   Tables        | Are       | Cool  |
 |:-------------|-------------|-----:|
- | col 1 is      | left-aligned                                    | $1600 |  
-col 2 is      | centered|   $12  
-  | zebra stripes |       | are neat   $1 |  
+ | col 1 is      | left-aligned                                    | $1600 |
+col 2 is      | centered|   $12
+  | zebra stripes |       | are neat   $1 |
 || |$hello
 |    $2 |"""
 
@@ -69,9 +69,9 @@ a|"""
         junk_tables = """
 |   Tables        | Are       | Cool #1  |
 |-------------|:-------------:|:-----|
- | col 3 is      | right-aligned | $1600 |  
-col 2 is      ||   $12  
-  | zebra stripes|are neat|    $1 |  
+ | col 3 is      | right-aligned | $1600 |
+col 2 is      ||   $12
+  | zebra stripes|are neat|    $1 |
 || |$hello
 |    $2 |
 
@@ -81,9 +81,9 @@ and junk
 
 |   Tables        | Are       | Cool #2 |
 |-------------|:-------------:|:-----|
- | col 3 is      | right-aligned | $1600 |  
-col 2 is      ||   $12  
-  | zebra stripes | are neat                                |    $1 |  
+ | col 3 is      | right-aligned | $1600 |
+col 2 is      ||   $12
+  | zebra stripes | are neat                                |    $1 |
 || |$hello
 |    $2 |
 
@@ -98,6 +98,29 @@ is it?
 """
         offsets = Table.find_all(junk_tables)
         self.assertEqual(len(offsets), 3)
+
+    def test_gfm_table(self):
+        # test table with minimal form (#7)
+        gfm_minimal = """\
+| foo | bar | third |
+| :------- | --- | ---: |
+| 123 | 4567777789 | test |
+| a || |
+"""
+        offsets = Table.find_all(gfm_minimal)
+        self.assertEqual(len(offsets), 1)
+
+        expected = """\
+| foo | bar        | third |
+|:----|:-----------|------:|
+| 123 | 4567777789 |  test |
+| a   |            |       |"""
+
+        table = Table.format(gfm_minimal, margin=1, padding=0)
+        self.assertEqual(table, expected)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

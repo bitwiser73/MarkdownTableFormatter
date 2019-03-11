@@ -1,6 +1,8 @@
 import re
 
 
+TABLE_PATTERN = re.compile(".*\|.*\r?\n[\s\t]*\|?(?: ?:?-+:? ?\| ?:?-+:? ?\|?)+(?:\r?\n.*\|.*)+")
+
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     from_string = dict((key, value) for key, value in enums.items())
@@ -16,8 +18,7 @@ def find_all(text):
     tables = []
     offset = 0
     while True:
-        pattern = ".*\|.*\r?\n[\s\t]*\|?(?::?-+:?\|:?-+:?\|?)+(?:\r?\n.*\|.*)+"
-        grp = re.search(pattern, text[offset:], re.MULTILINE)
+        grp = TABLE_PATTERN.search(text[offset:], re.MULTILINE)
         if grp is None:
             return tables
         tables.append((grp.start() + offset, grp.end() + offset))

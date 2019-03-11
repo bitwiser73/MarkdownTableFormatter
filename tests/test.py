@@ -4,7 +4,6 @@
 import unittest
 
 import testpath
-import simple_markdown.table
 import simple_markdown.table as Table
 
 
@@ -97,7 +96,7 @@ and some | to test |
 if it's still working ||||||
 is it?
 """
-        offsets = simple_markdown.table.find_all(junk_tables)
+        offsets = Table.find_all(junk_tables)
         self.assertEqual(len(offsets), 3)
 
 if __name__ == '__main__':

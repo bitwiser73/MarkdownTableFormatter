@@ -25,7 +25,8 @@ def find_all(text):
     return tables
 
 
-def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
+def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT,
+           last_column_width="fixed"):
     rows = raw_table.splitlines()
     # normalize markdown table, add missing leading/trailing '|'
     for idx, row in enumerate(rows):
@@ -52,6 +53,11 @@ def format(raw_table, margin=1, padding=0, default_justify=Justify.LEFT):
     text_width = [[len(col) for col in row] for row in matrix]
     # determine column width (including space padding/margin)
     col_width = [max(size) + margin*2 + padding for size in zip(*text_width)]
+    if last_column_width == "variable":
+        # modify the column width setting of last column to use use size of
+        # heading text of the last column instead of the size of the widest
+        # text of the last column
+        col_width[col_cnt-1] = text_width[0][-1] + margin*2 + padding
 
     # get each column justification or apply default
     justify = []

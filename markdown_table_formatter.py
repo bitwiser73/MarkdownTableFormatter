@@ -21,6 +21,7 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
         padding = settings.get("padding")
         justify = settings.get("default_justification")
         justify = markdown.table.Justify.from_string[justify]
+        last_column_width = settings.get("last_column_width")
 
         if verbose:
             log.setLevel(logging.DEBUG)
@@ -43,8 +44,9 @@ class MarkdownTableFormatCommand(sublime_plugin.TextCommand):
             for start, end in positions:
                 prev_table = text[start:end]
                 log.debug("table found:\n" + prev_table)
-                new_table = markdown.table.format(prev_table, margin, padding,
-                                                  justify)
+                new_table = markdown.table.format(prev_table,
+                                                  margin, padding, justify,
+                                                  last_column_width)
                 log.debug("formatted output:\n" + new_table)
 
                 # absolute original table position after some insertion/removal

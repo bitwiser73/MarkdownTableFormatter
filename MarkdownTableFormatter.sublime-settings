@@ -12,5 +12,9 @@
 	"padding": 0,
 
 	// how text should be justified when not specified [LEFT, RIGHT, CENTER]
-	"default_justification": "LEFT"
+	"default_justification": "LEFT",
+
+	// Whether the last column in tables must fit the widest content (set to
+	// "fixed") or can be variable width (set to "variable")
+	"last_column_width": "fixed"
 }

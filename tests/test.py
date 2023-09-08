@@ -66,6 +66,19 @@ a|"""
         table = Table.format(small, margin=1, padding=0)
         self.assertEqual(table, expected_small)
 
+        expected_table_variable = """\
+| Tables        | Are          | Cool |
+|:--------------|:-------------|-----:|
+| col 1 is      | left-aligned | $1600 |
+| col 2 is      | centered     |  $12 |
+| zebra stripes |              | are neat   $1 |
+|               |              | $hello |
+| $2            |              |      |"""
+
+        table = Table.format(raw_table, margin=1, padding=0,
+                             last_column_width="variable")
+        self.assertEqual(table, expected_table_variable)
+
     def test_find_all(self):
         junk_tables = """
 |   Tables        | Are       | Cool #1  |
